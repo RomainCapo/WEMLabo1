@@ -63,3 +63,6 @@
 2021-03-05 09:05:05.445 INFO  (qtp1800976873-41) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1614935102734} status=0 QTime=0
 2021-03-05 09:05:05.532 INFO  (qtp1800976873-15) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={wt=json&_=1614935102734} status=0 QTime=0
 2021-03-05 09:05:05.557 INFO  (qtp1800976873-38) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1614935102735} status=0 QTime=25
+2021-03-05 09:34:52.629 INFO  (qtp1800976873-20) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1614936892138} status=0 QTime=4
+2021-03-05 09:34:52.634 INFO  (qtp1800976873-41) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={wt=json&_=1614936892138} status=0 QTime=13
+2021-03-05 09:34:52.756 INFO  (qtp1800976873-38) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1614936892138} status=0 QTime=126
