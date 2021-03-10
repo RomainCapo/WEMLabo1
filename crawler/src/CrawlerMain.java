@@ -21,16 +21,16 @@ public class CrawlerMain {
         //max 2-3 levels for tests on large website
         config.setMaxDepthOfCrawling(8);
         //-1 for unlimited number of pages
-        config.setMaxPagesToFetch(1000);
+        config.setMaxPagesToFetch(1);
         try {
             PageFetcher pageFetcher = new PageFetcher(config);
             RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
             RobotstxtServer robotstxtServer= new RobotstxtServer(robotstxtConfig, pageFetcher);
             CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
-            controller.addSeed("https://fr.wikipedia.org");
+            controller.addSeed("https://fr.wikipedia.org/wiki/Haute_École_d%27ingénierie_et_de_gestion_du_canton_de_Vaud");
 
-            CrawlController.WebCrawlerFactory<Crawler> factory = Crawler::new;
+            CrawlController.WebCrawlerFactory<Crawler2> factory = Crawler2::new;
 
             controller.start(factory, numCrawlers);
         } catch (Exception e) {
