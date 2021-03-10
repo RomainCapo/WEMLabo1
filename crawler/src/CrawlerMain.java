@@ -22,16 +22,19 @@ public class CrawlerMain {
         config.setMaxDepthOfCrawling(8);
         //-1 for unlimited number of pages
         config.setMaxPagesToFetch(1000);
+        try {
+            PageFetcher pageFetcher = new PageFetcher(config);
+            RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+            RobotstxtServer robotstxtServer= new RobotstxtServer(robotstxtConfig, pageFetcher);
+            CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
-        PageFetcher pageFetcher = new PageFetcher(config);
-        RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-        RobotstxtServer robotstxtServer= new RobotstxtServer(robotstxtConfig, pageFetcher);
-        CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+            controller.addSeed("https://fr.wikipedia.org");
 
-        controller.addSeed("https://www.qoqa.ch/");
+            CrawlController.WebCrawlerFactory<Crawler> factory = Crawler::new;
 
-        CrawlController.WebCrawlerFactory<Crawler> factory = Crawler::new;
-
-        controller.start(factory, numCrawlers);
+            controller.start(factory, numCrawlers);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
