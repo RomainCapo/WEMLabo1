@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Crawler2 extends WebCrawler {
-    public static final String URL = "http://localhost:8983/solr/core2";
-    public static final SolrClient client = new ConcurrentUpdateSolrClient.Builder(URL).build();
-
     public static final String[] NOT_IN_PAGE_EXTENSIONS = {"css", "js", "jpeg", "png", "jpg", "gif", "bmp", "pdf",
             "mp4", "mp3"};
 
@@ -40,31 +37,32 @@ public class Crawler2 extends WebCrawler {
             String html = htmlParseData.getHtml();
 
             SolrInputDocument doc = new SolrInputDocument();
+// Processing script tag (type)
+Elements scriptTags = Jsoup.parse(html).body().getElementsByAttribute("type");
+for (Element el : scriptTags) {
+    if (el.attr("type").equals("application/ld+json")) {
+        JSONObject obj = new JSONObject(el.html());
+        doc.setField("name", obj.getString("name"));
+        doc.setField("datePublished", obj.getString("datePublished"));
+        doc.setField("author", obj.getJSONObject("author").getString("name"));
+    }
+}
+// Processing categories
+Elements categories = Jsoup.parse(html).body().getElementById("mw-normal-catlinks").getElementsByTag("li");
+List<String> catStr = new ArrayList<>();
+for (Element el :
+        categories) {
+    catStr.add(el.getElementsByTag("a").text());
+}
+doc.setField("categories", catStr);
 
-            Elements scriptTags = Jsoup.parse(html).body().getElementsByAttribute("type");
-            for (Element el : scriptTags) {
-                if (el.attr("type").equals("application/ld+json")) {
-                    JSONObject obj = new JSONObject(el.html());
-                    doc.setField("name", obj.getString("name"));
-                    doc.setField("image", obj.getString("image"));
-                    doc.setField("datePublished", obj.getString("datePublished"));
-                    doc.setField("author", obj.getJSONObject("author").getString("name"));
-                }
-            }
-            Elements categories = Jsoup.parse(html).body().getElementById("mw-normal-catlinks").getElementsByTag("li");
-            List<String> catStr = new ArrayList<>();
-            for (Element el :
-                    categories) {
-                catStr.add(el.getElementsByTag("a").text());
-            }
-            doc.setField("categories", catStr);
-
-            doc.setField("title", title);
+doc.setField("title", title);
+doc.setField("id", page.hashCode());
 
 
             try {
-                client.add(doc);
-                client.commit();
+                CrawlerMain.client2.add(doc);
+                CrawlerMain.client2.commit();
             } catch (SolrServerException | IOException e) {
                 e.printStackTrace();
             }

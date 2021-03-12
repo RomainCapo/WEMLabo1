@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.util.Set;
 
 public class Crawler extends WebCrawler {
-    public static final String URL = "http://localhost:8983/solr/core1";
-    public static final SolrClient client = new ConcurrentUpdateSolrClient.Builder(URL).build();
 
     public static final String[] NOT_IN_PAGE_EXTENSIONS = {"css", "js", "jpeg", "png", "jpg", "gif", "bmp", "pdf",
             "mp4", "mp3"};
@@ -48,8 +46,8 @@ public class Crawler extends WebCrawler {
             doc.setField("html", html);
             doc.setField("links", links);
             try {
-                client.add(doc);
-                client.commit();
+                CrawlerMain.client1.add(doc);
+                CrawlerMain.client1.commit();
             } catch (SolrServerException | IOException e) {
                 e.printStackTrace();
             }
